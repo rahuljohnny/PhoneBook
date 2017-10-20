@@ -4,7 +4,7 @@
         <nav class="panel column is-offset-2 is-8" >
             <p class="panel-heading">
                 Vuejs Phonebook
-                <button class="button is-primary is-outlined" >
+                <button class="button is-primary is-outlined" @click ="openAdd">
                     Add New
                 </button>
                 <span class="is-pulled-right" v-if="loading">
@@ -39,5 +39,34 @@
         </nav>
 
 
+    <Add :openmodal='addActive' @closeRequest = 'close'></Add>
     </div>
+
 </template>
+
+<script>
+    let Add = require('./Add.vue');
+
+    export default{
+        components:{Add},
+
+        data() //initialization of addActive
+        {
+            return {
+                addActive: ''
+            }
+        },
+
+        methods:{ //can declare all methods of this home view
+            openAdd()
+            {
+                this.addActive = 'is-active'
+            },
+            close()
+            {
+                this.addActive = ''
+            }
+        }
+    }
+
+</script>
