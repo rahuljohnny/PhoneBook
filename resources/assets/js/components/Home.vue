@@ -7,13 +7,15 @@
                 <button class="button is-primary is-outlined" @click ="openAdd">
                     Add New
                 </button>
-                <span class="is-pulled-right" v-if="loading">
+                <!-- <span class="is-pulled-right" v-if="loading"> -->
+                <span class="is-pulled-right">
 	    	<i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
 	    </span>
             </p>
             <div class="panel-block">
                 <p class="control has-icons-left">
-                    <input class="input is-small" type="text" placeholder="search" v-model="searchQuery">
+                    <!--<input class="input is-small" type="text" placeholder="search" v-model="searchQuery"> -->
+                    <input class="input is-small" type="text" placeholder="search">
                     <span class="icon is-small is-left">
 	        <i class="fa fa-search"></i>
 	      </span>
