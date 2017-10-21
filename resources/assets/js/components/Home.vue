@@ -17,22 +17,24 @@
                     <!--<input class="input is-small" type="text" placeholder="search" v-model="searchQuery"> -->
                     <input class="input is-small" type="text" placeholder="search">
                     <span class="icon is-small is-left">
-	        <i class="fa fa-search"></i>
-	      </span>
+	                <i class="fa fa-search"></i>
+        </span>
+
                 </p>
             </div>
 
 
-            <a class="panel-block ">
+        <a class="panel-block " v-for="item,key in lists">
+
 	  	<span class="column is-9">
-	    	Marksheet
+	    	{{item.name}}
 	  	</span>
 
-        <span class="panel-icon column is-1">
+                <span class="panel-icon column is-1">
 	      <i class="has-text-danger fa fa-trash" aria-hidden="true"></i>
 	    </span>
 
-        <span class="panel-icon column is-1">
+                <span class="panel-icon column is-1">
 	      <i class="has-text-info fa fa-edit" aria-hidden="true" ></i>
 	    </span><span class="panel-icon column is-1">
 	      <i class="has-text-primary fa fa-eye" aria-hidden="true"></i>
@@ -41,7 +43,7 @@
         </nav>
 
 
-    <Add :openmodal='addActive' @closeRequest = 'close'></Add>
+        <Add :openmodal='addActive' @closeRequest = 'close'></Add>
     </div>
 
 </template>
@@ -55,9 +57,19 @@
         data() //initialization of addActive
         {
             return {
-                addActive: ''
+                addActive: '',
+                lists:{},
+                errors:{}
             }
         },
+
+        mounted(){
+            axios.post('/getData')
+                .then((response) => this.lists = response.data)
+
+                .catch((error) => this.errors = error.response.data.errors)
+        },
+
 
         methods:{ //can declare all methods of this home view
             openAdd()
