@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PhonebookRequest;
 use App\Phonebook;
-use Illuminate\Http\Request;
 
 class PhonebookController extends Controller
 {
@@ -45,7 +44,7 @@ class PhonebookController extends Controller
 
         */
 
-        $contact = Phonebook::create($request->all());
+        Phonebook::create($request->all());
     }
 
     /**
@@ -77,9 +76,15 @@ class PhonebookController extends Controller
      * @param  \App\Phonebook  $phonebook
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Phonebook $phonebook)
+    public function update(PhonebookRequest $request)
     {
-        //
+        //dd($request);
+        //Phonebook::create($request->all());
+        $new = Phonebook::find($request->id);
+        $new->name = $request->name;
+        $new->phone = $request->phone;
+        $new->email = $request->email;
+        $new->save();
     }
 
     /**
