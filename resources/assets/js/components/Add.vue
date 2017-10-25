@@ -51,8 +51,6 @@
 </template>
 
 
-
-
 <script>
     export default{
         props:['openmodal'],//declared a props

@@ -6,8 +6,7 @@
                 <button class="button is-primary is-outlined" @click ="openAdd">
                     Add New
                 </button>
-                <!-- <span class="is-pulled-right" v-if="loading"> -->
-                <span class="is-pulled-right">
+                <span class="is-pulled-right" v-if="loading">
 	    	        <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
 	            </span>
             </p>
@@ -32,7 +31,7 @@
                 </span>
 
                 <span class="panel-icon column is-1">
-                  <i class="has-text-danger fa fa-trash" aria-hidden="true"></i>
+                  <i class="has-text-danger fa fa-trash" aria-hidden="true" @click ="openDel(key,item.id)"></i>
                 </span>
 
                 <span class="panel-icon column is-1">
@@ -50,6 +49,7 @@
         <Add :openmodal='addActive' @closeRequest = 'close'></Add>
         <Show :openmodal='showActive' @closeRequest = 'close'></Show>
         <Update :openmodal='updateActive' @closeRequest = 'close'></Update>
+        <!--<Del :openmodal='delActive' @closeRequest = 'close'></Del> -->
     </div>
 
 </template>
@@ -69,7 +69,8 @@
                 showActive: '',
                 updateActive: '',
                 lists:{},
-                errors:{}
+                errors:{},
+                loading: false
             }
         },
 
@@ -85,6 +86,7 @@
             openAdd()
             {
                 this.addActive = 'is-active'
+                axios.then((response) => this.lists.add()
             },
 
             close()
@@ -102,6 +104,23 @@
             {
                 this.$children[2].list = this.lists[key];
                 this.updateActive = 'is-active'
+            },
+
+            openDel(key,id )
+            {
+                //console.log(`${key} ${id}`)
+                this.loading = !(this.loading)
+
+                if(confirm('Delete this contact?'))
+                {
+                    axios.delete(`/phonebook/${id}`)
+                        .then((response) => this.lists.splice(key,1))
+                        this.loading = !(this.loading)
+                        .catch((error) => this.errors = error.response.data.errors)
+                }
+
+                //this.$children[2].list = this.lists[key];
+                //this.updateActive = 'is-active'
             },
         }
     }
