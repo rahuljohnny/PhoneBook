@@ -43223,7 +43223,8 @@ var Update = __webpack_require__(51);
             errors: {},
             loading: false,
             searchQuery: '',
-            temp: ''
+            temp: '',
+            searchDel: 0
         };
     },
 
@@ -43234,9 +43235,12 @@ var Update = __webpack_require__(51);
 
             if (this.searchQuery.length > 0) {
                 this.temp = this.lists.filter(function (item) {
-                    return item.name.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+                    return Object.keys(item).some(function (key) {
+                        var str = String(item[key]);
+                        return str.toLowerCase().indexOf(_this.searchQuery.toLowerCase()) > -1;
+                        searchDel++;
+                    });
                 });
-                //console.log(result)
             } else {
                 this.temp = this.lists;
             }
@@ -43255,7 +43259,6 @@ var Update = __webpack_require__(51);
 
 
     methods: {
-        //can declare all methods of this home view
         openAdd: function openAdd() {
             this.addActive = 'is-active';
         },
@@ -43263,17 +43266,16 @@ var Update = __webpack_require__(51);
             this.addActive = this.showActive = this.updateActive = '';
         },
         openShow: function openShow(key) {
-            this.$children[1].list = this.lists[key];
+            this.$children[1].list = this.temp[key];
             this.showActive = 'is-active';
         },
         openUpdate: function openUpdate(key) {
-            this.$children[2].list = this.lists[key];
+            this.$children[2].list = this.temp[key];
             this.updateActive = 'is-active';
         },
         openDel: function openDel(key, id) {
             var _this3 = this;
 
-            //console.log(`${key} ${id}`)
             this.loading = !this.loading;
 
             if (confirm('Delete this contact?')) {
@@ -43284,9 +43286,6 @@ var Update = __webpack_require__(51);
                     return _this3.errors = error.response.data.errors;
                 });
             }
-
-            //this.$children[2].list = this.lists[key];
-            //this.updateActive = 'is-active'
         }
     }
 });

@@ -71,7 +71,8 @@
                 errors:{},
                 loading: false,
                 searchQuery: '',
-                temp: ''
+                temp: '',
+                searchDel: 0
             }
         },
 
@@ -80,9 +81,12 @@
             {
                 if (this.searchQuery.length > 0){
                     this.temp = this.lists.filter((item) => {
-                        return item.name.toLowerCase().indexOf(this.searchQuery.toLowerCase())>-1
+                        return Object.keys(item).some((key) => {
+                            let str = String(item[key])
+                            return str.toLowerCase().indexOf(this.searchQuery.toLowerCase())>-1
+                            searchDel++
+                        })
                     });
-                    //console.log(result)
                 }
                 else{
                     this.temp = this.lists
@@ -98,7 +102,7 @@
         },
 
 
-        methods:{ //can declare all methods of this home view
+        methods:{
             openAdd()
             {
                 this.addActive = 'is-active'
@@ -111,19 +115,18 @@
 
             openShow(key)
             {
-                this.$children[1].list = this.lists[key];
+                this.$children[1].list = this.temp[key];
                 this.showActive = 'is-active'
             },
 
             openUpdate(key)
             {
-                this.$children[2].list = this.lists[key];
+                this.$children[2].list = this.temp[key];
                 this.updateActive = 'is-active'
             },
 
             openDel(key,id )
             {
-                //console.log(`${key} ${id}`)
                 this.loading = !(this.loading)
 
                 if(confirm('Delete this contact?'))
@@ -134,8 +137,6 @@
                         .catch((error) => this.errors = error.response.data.errors)
                 }
 
-                //this.$children[2].list = this.lists[key];
-                //this.updateActive = 'is-active'
             },
         }
     }
