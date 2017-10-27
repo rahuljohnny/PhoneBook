@@ -20,7 +20,9 @@ class PhonebookController extends Controller
 
     public function store(PhonebookRequest $request)
     {
-        Phonebook::create($request->all());
+        $newPB = Phonebook::create($request->all());
+        return $newPB;
+
     }
 
     public function show(Phonebook $phonebook)

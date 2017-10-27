@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Phonebook extends Model
 {
+
+
+    protected $hidden = [
+        'created_at',
+        'updated_at'
+    ];
+
    protected $fillable = [
      'name',
      'phone',

@@ -52,31 +52,44 @@
 
 
 <script>
-    export default{
-        props:['openmodal'],//declared a props
+    export default {
+        props: ['openmodal'],//declared a props
 
-        data(){
-            return{
-                list:{
-                    name:'',
-                    phone:'',
-                    email:''
+        data() {
+            return {
+                list: {
+                    name: '',
+                    phone: '',
+                    email: ''
                 },
-                errors:{}
+                errors: {}
             }
         },
 
-        methods:{ //besides props we can also declare methods here
-            close(){
+        methods: { //besides props we can also declare methods here
+            close() {
                 this.$emit('closeRequest')
             },
 
-            save(){
+            save() {
 
-                axios.post('/phonebook',this.$data.list).then((response) =>
-                    this.close())
+                axios.post('/phonebook', this.$data.list).then((response) => {
+                    this.close()
+                    this.$parent.lists.push(response.data)
 
-                .catch((error) => this.errors = error.response.data.errors)
+                    //sorting lists 'array' which we get from home.vue
+                    this.$parent.lists.sort(function (a,b) {
+                        if (a.name > b.name){
+                            return 1;
+                        }
+                        else if(a.name < b.name){
+                            return -1;
+                        }
+                    })
+                    this.list = {}
+                })
+                    .catch((error) => this.errors = error.response.data.errors)
+
             }
         }
     }
